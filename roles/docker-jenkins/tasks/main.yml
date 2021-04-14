@@ -43,6 +43,25 @@
     name: docker
     extra_args: --user
 
+- name: Create a lab directory
+  file:
+    path: lab
+    state: directory
+
+- name: Copy jenkins_ansible dir with a Dockerfile
+  copy:
+    src: jenkins_ansible
+    dest: lab
+
+- name: Build a docker image with Jenkins and Ansible
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  community.docker.docker_image:
+    name: "{{ jenkins_image_name }}"
+    build:
+      path: lab/jenkins_ansible
+    source: build
+
 - name: Create a network for containers
   vars:
     ansible_python_interpreter: /usr/bin/python3
@@ -53,8 +72,8 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   community.docker.docker_container:
-    name: myjenkins
-    image: jenkins/jenkins
+    name: "{{ jenkins_container_name }}"
+    image: "{{ jenkins_image_name }}"
     container_default_behavior: compatibility
     ports:
       - "8080:8080"

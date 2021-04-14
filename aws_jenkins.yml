@@ -1,5 +1,6 @@
 - name: Start Jenkins container on AWS EC2
   hosts: all
+  gather_facts: no
 
   roles:
     - docker-jenkins

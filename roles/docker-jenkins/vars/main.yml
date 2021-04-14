@@ -1,3 +1,5 @@
 ---
 # vars file for docker-jenkins
 lab_network: lab-net
+jenkins_image_name: jenkins_ansible
+jenkins_container_name: myjenkins
